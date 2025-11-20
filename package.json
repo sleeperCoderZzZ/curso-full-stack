@@ -1,0 +1,28 @@
+{
+  "name": "curso-full-stack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "ws:server": "node ./relogio/src/index.js",
+    "ws:client": "node ./relogio/schedule/index.js",
+    "ws:dev": "npm run ws:server & npm run ws:client & npm run frontend",
+    "frontend": "live-server relogio --open=./index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sleeperCoderZzZ/curso-full-stack.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sleeperCoderZzZ/curso-full-stack/issues"
+  },
+  "homepage": "https://github.com/sleeperCoderZzZ/curso-full-stack#readme",
+  "dependencies": {
+    "live-server": "^1.2.2",
+    "node-html-parser": "^7.0.1"
+  }
+}
