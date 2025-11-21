@@ -7,7 +7,7 @@ document.getElementById('botaoVerificadorDivisao').addEventListener('click', (ev
     console.log('valor input: ', inputNumero.valueAsNumber);
     const resultadoFuncao = verificarDivisao(inputNumero.valueAsNumber);
     
-    if (resultadoFuncao == 'Fizz' || resultadoFuncao == 'Buzz') {
+    if (resultadoFuncao == 'Fizz' || resultadoFuncao == 'Buzz' || resultadoFuncao == 'FizzBuzz') {
         divResposta.innerHTML = `<p>O Resultado é: ${resultadoFuncao}</p>`;
     } else {
         divResposta.innerHTML = `<p>O resultado não é divivel por 3 e nem por 5: ${resultadoFuncao}</p>`
@@ -18,12 +18,15 @@ document.getElementById('botaoVerificadorDivisao').addEventListener('click', (ev
 function verificarDivisao(numeroDivisao) {
     if (!isNaN(numeroDivisao)) {
         if (numeroDivisao >= 0  && numeroDivisao <= 100) {
-            if (numeroDivisao % 3 == 0) {
+            if (numeroDivisao % 3 == 0 && !(numeroDivisao % 3 == 0 && numeroDivisao % 5 == 0)) {
                 const eFizz = 'Fizz';
                 return eFizz;
-            } else if (numeroDivisao % 5 == 0) {
+            } else if (numeroDivisao % 5 == 0 && !(numeroDivisao % 3 == 0 && numeroDivisao % 5 == 0)) {
                 const eBuzz = 'Buzz';
                 return eBuzz;
+            } else if (numeroDivisao % 3 == 0 && numeroDivisao % 5 == 0){
+                const fizzBuzz = 'FizzBuzz'
+                return fizzBuzz
             } else {
                 return numeroDivisao;
             };
