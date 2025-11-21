@@ -22,8 +22,10 @@ document.getElementById('botaoCalcularTamanho')
 
     const tamanho = extrairTamanhoArquivo(dadosImagemBase64);
     const resolucao = await obterResolucaoArquvio(dadosImagemBase64);
+    const ePaisagem = resolucao.largura > resolucao.altura ? 'Sim' : 'Não'        
 
     divResposta.innerHTML = `
+        É paisagem ? ${ePaisagem} <br>
         Resolução: ${resolucao.largura} × ${resolucao.altura}<br>
         Tamanho aproximado: ${tamanho} bytes
     `;
