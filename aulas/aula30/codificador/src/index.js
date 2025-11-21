@@ -3,10 +3,6 @@ const botaoDecodificar = document.getElementById('botao-decodificar');
 const inputTexto = document.getElementById('input-texto');
 const divResposta = document.getElementById('div-resposta');
 
-botaoCodificar.addEventListener('click', clicarBotaoCodificar);
-botaoDecodificar.addEventListener('click', clicarBotaoDecodificar);
-
-
 function decodificar(texto) {
     let resposta = '';
     for (let letra of texto) {
@@ -27,7 +23,10 @@ function clicarBotaoCodificar() {
 
 function clicarBotaoDecodificar() {
     const texto = divResposta.textContent;
+    console.log('divRespota: ', divResposta.textContent);
+    console.log('texto: ', texto);
     const textoDecodificado = decodificar(texto);
+    console.log('textoDecodificado: ', textoDecodificado);
     divResposta.textContent = textoDecodificado
 
 }
