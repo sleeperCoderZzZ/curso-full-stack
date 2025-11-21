@@ -1,4 +1,4 @@
-'strict'
+'use strict'
 import readline from 'readline';
 
 function maiorNumero (n1, n2) {
