@@ -8,7 +8,8 @@
     "ws:server": "node ./relogio/src/index.js",
     "ws:client": "node ./relogio/schedule/index.js",
     "ws:dev": "npm run ws:server & npm run ws:client & npm run frontend",
-    "frontend": "live-server relogio --open=./index.html"
+    "frontend": "live-server relogio --open=./index.html",
+    "start": "node ./aulas/aula31/index.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
   "homepage": "https://github.com/sleeperCoderZzZ/curso-full-stack#readme",
   "dependencies": {
     "live-server": "^1.2.2",
-    "node-html-parser": "^7.0.1"
+    "node-html-parser": "^7.0.1",
+    "readline": "^1.3.0"
   }
 }
