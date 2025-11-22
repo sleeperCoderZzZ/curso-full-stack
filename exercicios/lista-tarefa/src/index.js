@@ -1,89 +1,74 @@
 'use strict'
+const inputTextoTarefa = document.getElementById('input-texto');
+const botaoAdicionarTarefa = document.getElementById('adicionar-tarefa');
+const containerTarefas = document.getElementById('lista-item');
+let idElemento = 0;
 
-let divTimer = document.getElementById('timer-container');
-let botaoParado = false;
-let tempoComeco = 0;
-let tempoPassado = 0;
-let idInterval = null;
+const STORAGE_KEY = 'minhaListaDeItens';
 
-document.getElementById('botaoTimerContinuar').addEventListener('click', () => {
+botaoAdicionarTarefa.addEventListener('click', () => {
+    console.log(inputTextoTarefa.value);
+    console.log(botaoAdicionarTarefa);
+    console.log(containerTarefas);
 
-    if (idInterval !== null) return;
+    const elementoCriado = adicionarItem(inputTextoTarefa.value, containerTarefas);
 
-    divTimer.style.color = null;
-
-    tempoComeco = Date.now() - tempoPassado;
-
-    console.log(tempoComeco)
-
-    idInterval = setInterval(atualizarCronometro, 1000);
+    console.log(elementoCriado)
 })
 
-document.getElementById('botaoTimerParar').addEventListener('click', () => {
-
-    if (idInterval) {
-
-        tempoPassado = Date.now() - tempoComeco;
-
-        divTimer.style.color = 'red'
-
-        clearInterval(idInterval);
-        idInterval = null;
-
+function carregarItens() {
+    const itensSalvos = localStorage.getItem(STORAGE_KEY);
+    if (itensSalvos) {
+        const itens = JSON.parse(itensSalvos);
+        itens.forEach(itemText => criarElemento(itemText));
     }
-
-})
-
-document.getElementById('botaoTimerZerar').addEventListener('click', () => {
-
-    zerarCronometro();
-
-    divTimer.style.color = null;
-
-    tempoPassado = 0;
-
-    clearInterval(idInterval);
-    idInterval = null;
-
-})
-
-function atualizarCronometro() {
-
-    const tempoDecorrido = Date.now() - tempoComeco;
-
-    let horas = Math.floor(tempoDecorrido / 3600000);
-    let minutos = Math.floor((tempoDecorrido % 3600000) / 60000);
-    let segundos = Math.floor((tempoDecorrido % 60000) / 1000);
-
-    const horasFmt = String(horas).padStart(2, '0');
-    const minutosFmt = String(minutos).padStart(2, '0');
-    const segundosFmt = String(segundos).padStart(2, '0');
-
-    const tempoTimer = `${horasFmt}:${minutosFmt}:${segundosFmt}`;
-
-    divTimer.textContent = tempoTimer
-
-    return tempoTimer
 }
 
-function zerarCronometro() {
-
-    const tempoZerado = 0;
-
-    let horas = Math.floor(tempoZerado / 3600000);
-    let minutos = Math.floor((tempoZerado % 3600000) / 60000);
-    let segundos = Math.floor((tempoZerado % 60000) / 1000);
-
-    const horasFmt = String(horas).padStart(2, '0');
-    const minutosFmt = String(minutos).padStart(2, '0');
-    const segundosFmt = String(segundos).padStart(2, '0');
-
-    const tempoTimerZerado = `${horasFmt}:${minutosFmt}:${segundosFmt}`;
-
-    divTimer.textContent = tempoTimerZerado
-
-    return tempoTimerZerado
-
+function adicionarItem(itemInput) {
+    const itemText = itemInput.trim();
+    if (itemText !== '') {
+        criarElemento(itemText);
+        salvarElementoCache();
+        itemInput = '';
+    }
 }
 
 
+function criarElemento(nomeTarefa) { 
+    let elementoTarefa = document.createElement("li");
+    let botaoApagar = document.createElement("button");
+
+    elementoTarefa.textContent = `{nome: ${nomeTarefa}, id: ${idElemento} }`
+    botaoApagar.value = idElemento
+
+    idElemento++;
+
+    containerTarefas.appendChild(elementoTarefa);
+    containerTarefas.appendChild(botaoApagar);
+    
+    salvarElementoCache();
+
+};
+
+function salvarElementoCache () {
+    const itens = [];
+    containerTarefas.querySelectorAll('li').forEach(li => {
+        itens.push(li.textContent);
+    });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(itens));
+}
+
+function deletarELementoCache(idRemocao) {
+    const itensCache = localStorage.getItem(STORAGE_KEY);
+
+    const listaCache = JSON.parse(itensCache)
+    
+    const listaAtualizada = listaCache.filter(item => item.id !== idRemocao);
+
+    console.log("olha aqui!!!!", listaAtualizada)
+
+}
+
+//carregarItens();
+
+deletarELementoCache();

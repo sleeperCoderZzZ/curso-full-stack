@@ -4,22 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Lista de tarefas</title>
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 
 <body>
     <section class="container ">
         <h1>
-            Timer
+            Lista de tarefas
         </h1>
         <form action="">
-            <div id="timer-container">
-                00:00:00
+            <label for="">Insira uma Tarefa</label>
+            <input type="text" id="input-texto">
+            <button type="button" id="adicionar-tarefa">Adicionar</button>
+            <div id="lista-container">
+                <ul id="lista-item">
+
+                </ul>
             </div>
-            <button type="button" id="botaoTimerParar">Parar</button>
-            <button type="button" id="botaoTimerContinuar">Continuar</button>
-            <button type="button" id="botaoTimerZerar">Zerar</button>
         </form>
     </section>
 </body>
