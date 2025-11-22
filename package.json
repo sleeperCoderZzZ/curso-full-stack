@@ -9,7 +9,8 @@
     "ws:client": "node ./relogio/schedule/index.js",
     "ws:dev": "npm run ws:server & npm run ws:client & npm run frontend",
     "frontend": "live-server relogio --open=./index.html",
-    "start": "node ./aulas/aula31/index.js"
+    "start": "node ./aulas/aula31/index.js",
+    "timer": "node ./exercicios/timer/src/index.js"
   },
   "repository": {
     "type": "git",
