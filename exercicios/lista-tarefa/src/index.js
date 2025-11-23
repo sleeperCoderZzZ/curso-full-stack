@@ -1,74 +1,93 @@
 'use strict'
+
 const inputTextoTarefa = document.getElementById('input-texto');
 const botaoAdicionarTarefa = document.getElementById('adicionar-tarefa');
 const containerTarefas = document.getElementById('lista-item');
-let idElemento = 0;
 
 const STORAGE_KEY = 'minhaListaDeItens';
 
-botaoAdicionarTarefa.addEventListener('click', () => {
-    console.log(inputTextoTarefa.value);
-    console.log(botaoAdicionarTarefa);
-    console.log(containerTarefas);
+// Variável global para manter o estado da nossa lista
+let listaDeTarefas = [];
 
-    const elementoCriado = adicionarItem(inputTextoTarefa.value, containerTarefas);
-
-    console.log(elementoCriado)
-})
-
+// 1. Carregar itens ao iniciar
 function carregarItens() {
     const itensSalvos = localStorage.getItem(STORAGE_KEY);
     if (itensSalvos) {
-        const itens = JSON.parse(itensSalvos);
-        itens.forEach(itemText => criarElemento(itemText));
+        listaDeTarefas = JSON.parse(itensSalvos);
+        renderizarLista();
     }
 }
 
-function adicionarItem(itemInput) {
-    const itemText = itemInput.trim();
-    if (itemText !== '') {
-        criarElemento(itemText);
-        salvarElementoCache();
-        itemInput = '';
+// 2. Adicionar nova tarefa
+botaoAdicionarTarefa.addEventListener('click', () => {
+    const texto = inputTextoTarefa.value.trim();
+
+    if (texto !== '') {
+        const novaTarefa = {
+            id: Date.now(), // Gera um ID único baseado no tempo
+            nome: texto
+        };
+
+        listaDeTarefas.push(novaTarefa);
+        salvarEAtualizar();
+
+        // Limpar o input corretamente
+        inputTextoTarefa.value = '';
+        inputTextoTarefa.focus();
     }
+});
+
+// 3. Função principal que desenha a tela (Render)
+function renderizarLista() {
+    // Limpa a lista atual no HTML para não duplicar
+    containerTarefas.innerHTML = '';
+
+    listaDeTarefas.forEach(tarefa => {
+        criarElementoVisual(tarefa);
+    });
 }
 
-
-function criarElemento(nomeTarefa) { 
+// 4. Criar o elemento HTML visualmente
+function criarElementoVisual(tarefaObjeto) {
     let elementoTarefa = document.createElement("li");
+    let textoTarefa = document.createElement("span"); // Span para o texto
     let botaoApagar = document.createElement("button");
 
-    elementoTarefa.textContent = `{nome: ${nomeTarefa}, id: ${idElemento} }`
-    botaoApagar.value = idElemento
+    // Configurar o texto
+    textoTarefa.textContent = tarefaObjeto.nome;
 
-    idElemento++;
+    // Configurar o botão
+    botaoApagar.textContent = 'Apagar';
+    botaoApagar.type = 'button';
 
+    // *** AQUI ESTÁ A MÁGICA DO APAGAR ***
+    // Adicionamos o evento direto ao criar o botão
+    botaoApagar.addEventListener('click', () => {
+        deletarTarefa(tarefaObjeto.id);
+    });
+
+    // Montar o HTML: Colocar o botão DENTRO do Li
+    elementoTarefa.appendChild(textoTarefa);
+    elementoTarefa.appendChild(botaoApagar);
+
+    // Adicionar Li na lista
     containerTarefas.appendChild(elementoTarefa);
-    containerTarefas.appendChild(botaoApagar);
-    
-    salvarElementoCache();
-
 };
 
-function salvarElementoCache () {
-    const itens = [];
-    containerTarefas.querySelectorAll('li').forEach(li => {
-        itens.push(li.textContent);
-    });
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(itens));
+// 5. Função para salvar e redesenhar
+function salvarEAtualizar() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(listaDeTarefas));
+    renderizarLista();
 }
 
-function deletarELementoCache(idRemocao) {
-    const itensCache = localStorage.getItem(STORAGE_KEY);
+// 6. Lógica de Remoção
+function deletarTarefa(idParaRemover) {
+    // Filtra a lista mantendo apenas quem tem ID diferente do removido
+    listaDeTarefas = listaDeTarefas.filter(item => item.id !== idParaRemover);
+    console.log("Item removido. Nova lista:", listaDeTarefas);
 
-    const listaCache = JSON.parse(itensCache)
-    
-    const listaAtualizada = listaCache.filter(item => item.id !== idRemocao);
-
-    console.log("olha aqui!!!!", listaAtualizada)
-
+    salvarEAtualizar();
 }
 
-//carregarItens();
-
-deletarELementoCache();
+// Inicializar
+carregarItens();
